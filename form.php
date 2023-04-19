@@ -30,8 +30,14 @@ if (isset($_POST['sendMessageBtn'])) {
         $message = $_POST['message'];
     }
 
+    if(empty($_POST['myEmail'])){
+        array_push($_SESSION['errors'], 'Receiving Message Email is Required');
+    }else{
+        $myEmail = $_POST['myEmail'];
+    }
+
     if(!isset($_SESSION['errors']) || count($_SESSION['errors']) == 0){
-        $to = "admin@example.com";
+        $to = $myEmail;
 
            if(mail($to,$subject,$message,$email))
            {
@@ -67,9 +73,15 @@ if (isset($_POST['sendMessageBtn'])) {
 
     <main>
         <div class="container">
+        <form action="form.php" method="post">
             <div class="row mt-4 mb-2">
                 <h2>Contact Form</h2>
                 <p>Admin will receive this message via Email</p>
+                <div class="mb-3">
+                  <label for="myEmail" class="form-label">Enter Your Receiving Message Email</label>
+                  <input type="text"
+                    class="form-control" name="myEmail" id="myEmail" aria-describedby="helpId" placeholder="Receiving Message Email">
+                </div>
             </div>
             <div class="container mt-4 mb-4" id="contactform">
                 <?php
@@ -95,7 +107,6 @@ if (isset($_POST['sendMessageBtn'])) {
                 <div class="row">
                     <div class="col-md-6 col-lg-6 col-12 m-auto">
 
-                        <form action="form.php" method="post">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Enter Your Name" aria-describedby="helpId" required>
